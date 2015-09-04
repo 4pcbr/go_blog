@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type Post struct {
     Id          int64       `db:"id" json:"id"`
     Title       string      `db:"title" json:"title"`
@@ -8,6 +10,6 @@ type Post struct {
     BlogId      string      `db:"blog_id" json:"blog_id"`
     Tags        string      `db:"tags" json:"tags"`
     Published   bool        `db:"published" json:"published"`
-    CreatedAt   string      `db:"created_at" json:"created_at"`
-    UpdatedAt   string      `db:"updated_at" json:"updated_at"`
+    CreatedAt   time.Time   `db:"created_at" json:"created_at"`
+    UpdatedAt   time.Time   `db:"updated_at" json:"updated_at"`
 }

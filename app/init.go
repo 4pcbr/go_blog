@@ -1,11 +1,11 @@
 package app
 
 import (
-    "fmt"
-    "strings"
+    //"fmt"
+    //"strings"
     "github.com/revel/revel"
-    "database/sql"
-    _ "github.com/go-sql-driver/mysql"
+    //"database/sql"
+    //"github.com/coopernurse/gorp"
 )
 
 func init() {
@@ -27,7 +27,7 @@ func init() {
 
 	// register startup functions with OnAppStart
 	// ( order dependent )
-	revel.OnAppStart(InitDB)
+    // revel.OnAppStart(InitDB)
 	// revel.OnAppStart(FillCache)
 }
 
@@ -41,46 +41,4 @@ var HeaderFilter = func(c *revel.Controller, fc []revel.Filter) {
 	c.Response.Out.Header().Add("X-Content-Type-Options", "nosniff")
 
 	fc[0](c, fc[1:]) // Execute the next filter stage.
-}
-
-var InitDB = func() {
-    connectionString := getConnectionString();
-    if db, err := sql.Open("mysql", connectionString); err != nil {
-        revel.ERROR.Fatal(err)
-    } else {
-        // TODO
-        revel.TRACE.Printf("%#v", db)
-    }
-}
-
-// https://rclayton.silvrback.com/revel-gorp-and-mysql
-
-func getParamString(param string, defaultValue string) string {
-    p, found := revel.Config.String(param)
-    if !found {
-        if defaultValue == "" {
-            revel.ERROR.Fatal("Cound not find parameter: " + param)
-        } else {
-            return defaultValue
-        }
-    }
-    return p
-}
-
-func getConnectionString() string {
-    host     := getParamString("db.host", "")
-    port     := getParamString("db.port", "3306")
-    user     := getParamString("db.user", "")
-    pass     := getParamString("db.password", "")
-    dbname   := getParamString("db.dbname", "WTFFIXME")
-    protocol := getParamString("db.protocol", "tcp")
-    dbargs   := getParamString("dbargs", " ")
-
-    if strings.Trim(dbargs, " ") != "" {
-        dbargs = "?" + dbargs
-    } else {
-        dbargs = ""
-    }
-    return fmt.Sprintf("%s:%s@%s([%s]:%s)/%s%s",
-        user, pass, protocol, host, port, dbname, dbargs)
 }
