@@ -1,0 +1,19 @@
+{{set . "title" "Blog"}}
+{{template "header.html" .}}
+
+<div class="container">
+    {{if .posts}}
+        {{range .posts}}
+            <div class="post">
+                <h4>{{.Title}}</h4>
+                <div class="post-body">
+                    {{raw .Body}}
+                </div>
+            </div>
+        {{end}}
+    {{else}}
+        <h4>No blog posts yet</h4>
+    {{end}}
+</div>
+
+{{template "footer.html" .}}
